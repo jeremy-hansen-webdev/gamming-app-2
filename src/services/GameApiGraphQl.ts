@@ -10,7 +10,44 @@ export const wpGraphqlClient = axios.create({
   },
 });
 
-async function testGraphQL() {
+async function getGenres() {
+  const res = await wpGraphqlClient.post('', {
+    query: /* GraphQL */ `
+      query Genres {
+        genres {
+          nodes {
+            title
+            genreFields {
+              name
+              image
+            }
+          }
+        }
+      }
+    `,
+  });
+  console.log('Genres: ', res.data?.data?.genres?.nodes);
+}
+
+async function getPlatforms() {
+  const res = await wpGraphqlClient.post('', {
+    query: /* GraphQL */ `
+      query Platforms {
+        platforms {
+          nodes {
+            title
+            platformFields {
+              name
+            }
+          }
+        }
+      }
+    `,
+  });
+  console.log('Platforms: ', res);
+}
+
+async function getGames() {
   const res = await wpGraphqlClient.post('', {
     query: /* GraphQL */ `
       query Games {
@@ -47,4 +84,7 @@ async function testGraphQL() {
   console.log('Games:', res.data?.data?.games?.nodes);
 }
 
-testGraphQL();
+// Uncomment whichever function you want to test:
+// getGenres();
+// getGames()
+getPlatforms();
