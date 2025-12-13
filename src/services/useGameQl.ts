@@ -1,10 +1,10 @@
-import { wpGraphqlClient } from "./GameApiGraphQl"
-import type { Games, RawGameNode } from "./Types";
+import { wpGraphqlClient } from './GameApiGraphQl';
+import type { Games, RawGameNode } from './Types';
 
 export class GameData {
-    async getGames(): Promise<Games[]> {
-        const res = await wpGraphqlClient.post('', {
-            query: /* GraphQL */ `
+  async getGames(): Promise<Games[]> {
+    const res = await wpGraphqlClient.post('', {
+      query: /* GraphQL */ `
         query Games {
           games {
             nodes {
@@ -15,19 +15,17 @@ export class GameData {
                 rating
                 genres {
                   nodes {
+                    title
                     slug
                     genreFields {
-                      name
                       image
                     }
                   }
                 }
                 platform {
                   nodes {
+                    title
                     slug
-                    platformFields {
-                      name
-                    }
                   }
                 }
               }
@@ -35,24 +33,24 @@ export class GameData {
           }
         }
       `,
-        });
+    });
 
-        const reqData: RawGameNode[] = res.data?.data?.games?.nodes;
-        const formatData = reqData.map(data => ({
-            title: data.title,
-            slug: data.slug,
-            image: data.gameFields.image,
-            rating: data.gameFields.rating,
-            genre: data.gameFields.genres.nodes.map(g => ({
-                name: g.genreFields.name,
-                slug: g.slug,
-                image: g.genreFields.image
-            })),
-            platform: data.gameFields.platform.nodes.map(p => ({
-                name: p.platformFields.name,
-                slug: p.slug
-            }))
-        }))
-        return formatData
-    }
+    const reqData: RawGameNode[] = res.data?.data?.games?.nodes;
+    const formatData = reqData.map((data) => ({
+      title: data.title,
+      slug: data.slug,
+      image: data.gameFields.image,
+      rating: data.gameFields.rating,
+      genre: data.gameFields.genres.nodes.map((g) => ({
+        title: g.title,
+        slug: g.slug,
+        image: g.genreFields.image,
+      })),
+      platform: data.gameFields.platform.nodes.map((p) => ({
+        title: p.title,
+        slug: p.slug,
+      })),
+    }));
+    return formatData;
+  }
 }

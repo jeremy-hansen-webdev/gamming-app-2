@@ -8,13 +8,13 @@ export interface Games {
 }
 
 export interface Genre {
-    name: string
+    title: string
     slug: string
     image: string
 }
 
 export interface Platform {
-    name: string
+    title: string
     slug: string
 }
 
@@ -30,23 +30,16 @@ export interface RawGameNode {
             nodes: RawGenreNode[]
         }
         platform: {
-            nodes: RawPlatformNode[]
+            nodes: Platform[]
         }
     }
 }
 
 // Raw GraphQL response types
 export interface RawGenreNode {
+    title: string
     slug: string
     genreFields: {
-        name: string
         image: string
-    }
-}
-
-export interface RawPlatformNode {
-    slug: string
-    platformFields: {
-        name: string
     }
 }

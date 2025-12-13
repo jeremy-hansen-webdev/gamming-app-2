@@ -10,8 +10,7 @@ export interface GamesDataProps {
     background_image: string
     rating: number
     platforms: Platforms[]
-    genres: Genres[]
-    
+    genres: Genres[]   
 }
 
 export class GamesData {
@@ -41,7 +40,3 @@ const getGamesData = new GamesData({genres: 2, platform: 5})
 await getGamesData.setGameData()
 
 export const gamesData = getGamesData.gameData
-
-
-
-
