@@ -1,4 +1,5 @@
 export interface Games {
+    id: number
     title: string
     slug: string
     image: string
@@ -8,19 +9,20 @@ export interface Games {
 }
 
 export interface Genre {
+    id: number
     title: string
     slug: string
     image: string
 }
 
 export interface Platform {
+    id: number
     title: string
     slug: string
 }
 
-
-
 export interface RawGameNode {
+    databaseId: number
     title: string
     slug: string
     gameFields: {
@@ -37,6 +39,7 @@ export interface RawGameNode {
 
 // Raw GraphQL response types
 export interface RawGenreNode {
+    databaseId: number
     title: string
     slug: string
     genreFields: {

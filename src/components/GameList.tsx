@@ -1,5 +1,4 @@
-import { useGames } from '../hooks/useGameHook';
-import type { Filters } from '../services/GameApiClient';
+import { useGames } from '../hooks/useGameHookQl';
 
 interface Props {
   selectedGenreId?: number;
