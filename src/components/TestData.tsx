@@ -1,9 +1,9 @@
-import { useGames } from '../hooks/useGameHookQl';
+import { usePlatforms } from '../hooks/usePlatformHookQl';
 
 const TestData = () => {
-  const { games, loading, error } = useGames();
+  const { platforms, loading, error } = usePlatforms();
 
-  console.log('Games: ', games);
+  console.log('Platforms: ', platforms);
   console.log('Loading: ', loading);
   console.log('Error : ', error);
   return (

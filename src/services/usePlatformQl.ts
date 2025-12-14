@@ -1,7 +1,7 @@
 import { wpGraphqlClient } from './GameApiGraphQl.ts';
 import type { Platform } from './Types';
 
-class PlatformQueries {
+export class PlatformQueries {
   async getPlatforms(): Promise<Platform[]> {
     const res = await wpGraphqlClient.post('', {
       query: /* GraphQL */ `
