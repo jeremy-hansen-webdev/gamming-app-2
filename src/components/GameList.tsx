@@ -1,16 +1,15 @@
 import { useGames } from '../hooks/useGameHookQl';
 import type { Games } from '../services/Types';
+import GameCard from './GameCard';
 
 const GameList = () => {
   const { games, loading, error } = useGames();
 
   return (
-    <div>
-      <ul>
-        {games.map((game) => (
-          <li key={game.id}>{game.title}</li>
-        ))}
-      </ul>
+    <div className="flex flex-wrap justify-center gap-10">
+      {games.map((game: Games) => (
+        <GameCard {...game} />
+      ))}
     </div>
   );
 };

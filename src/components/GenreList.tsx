@@ -1,6 +1,6 @@
-import { useGenre } from '../hooks/useGenreHook';
+import { useGenres } from '../hooks/useGenreHookQl';
 const GenreList = () => {
-  const { genre, loading, error } = useGenre();
+  const { genres, loading, error } = useGenres();
   if (loading) {
     return (
       <div className="inline-flex items-center justify-center">
@@ -10,15 +10,11 @@ const GenreList = () => {
   }
   return (
     <div>
-      {genre.map((g) => (
+      {genres.map((g) => (
         <li className="text-zinc-300" key={g.id}>
           <div className="flex gap-3 rounded-2xl my-3 p-3 items-center cursor-pointer hover:bg-zinc-600">
-            <img
-              className="w-24 h-12 rounded-[10%]"
-              src={g.image_background}
-              alt=""
-            />
-            <h3 className="text-[18px]">{g.name}</h3>
+            <img className="w-24 h-12 rounded-[10%]" src={g.image} alt="" />
+            <h3 className="text-[18px]">{g.title}</h3>
           </div>
         </li>
       ))}

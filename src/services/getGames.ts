@@ -1,13 +1,16 @@
 import { wpGraphqlClient } from './GameApiGraphQl.ts';
-import type { Games, RawGameNode } from './Types';
+import type { Games, RawGameNode } from './Types.ts';
 
-export class GameQueries {
+
+export class GamesData {
+  constructor(private gameId?: number, private genreId?: number, private platformId?: number){}
   async getGames(): Promise<Games[]> {
     const res = await wpGraphqlClient.post('', {
       query: /* GraphQL */ `
         query Games {
           games {
             nodes {
+              id
               databaseId
               title
               slug
@@ -16,6 +19,7 @@ export class GameQueries {
                 rating
                 genres {
                   nodes {
+                    id
                     databaseId
                     ... on NodeWithTitle {
                       title
@@ -31,6 +35,7 @@ export class GameQueries {
                 }
                 platform {
                   nodes {
+                    id
                     databaseId
                     ... on NodeWithTitle {
                       title
@@ -48,6 +53,7 @@ export class GameQueries {
     const reqData: RawGameNode[] = res.data?.data?.games?.nodes;
     const formatData = reqData.map((data) => ({
       id: data.databaseId,
+      databaseId: data.databaseId,
       title: data.title,
       slug: data.slug,
       image: data.gameFields.image,
@@ -69,7 +75,7 @@ export class GameQueries {
 }
 
 (async () => {
-  const gameServices = new GameQueries();
+  const gameServices = new GamesData();
   const gameData = await gameServices.getGames();
   console.log(gameData);
 })();

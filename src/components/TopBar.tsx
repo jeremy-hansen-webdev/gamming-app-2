@@ -14,7 +14,7 @@ interface TopbarProps {
 
 export function Topbar({ onOpenSidebar }: TopbarProps) {
   return (
-    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
+    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b bg-zinc-600 px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={onOpenSidebar}
@@ -34,11 +34,11 @@ export function Topbar({ onOpenSidebar }: TopbarProps) {
             name="search"
             placeholder="Search"
             aria-label="Search"
-            className="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm/6"
+            className="col-start-1 row-start-1 block size-full bg-zinc-400 pl-8 text-base text-gray-900 outline-hidden placeholder:text-zinc-50 sm:text-sm/6"
           />
           <MagnifyingGlassIcon
             aria-hidden="true"
-            className="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
+            className="pointer-events-none col-start-1 row-start-1 size-5 self-center text-zinc-50"
           />
         </form>
 

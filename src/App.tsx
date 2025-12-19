@@ -1,12 +1,12 @@
 import './App.css';
-
-import TestData from './components/TestData';
+import AppShell from './components/AppShell';
+import NavBar from './components/NavBar';
 
 function App() {
   return (
     <>
-      <TestData />
-    
+      <NavBar />
+      <AppShell />
     </>
   );
 }

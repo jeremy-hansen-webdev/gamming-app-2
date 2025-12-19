@@ -1,5 +1,5 @@
 import { wpGraphqlClient } from './GameApiGraphQl.ts';
-import type { Platform } from './Types';
+import type { Platform } from './Types.ts';
 
 export class PlatformQueries {
   async getPlatforms(): Promise<Platform[]> {

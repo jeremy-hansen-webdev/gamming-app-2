@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GenreQueries } from '../services/useGenreQl';
+import { GenreQueries } from '../services/getGenres';
 import type { Genre } from '../services/Types';
 
 export function useGenres() {

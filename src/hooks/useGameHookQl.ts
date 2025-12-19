@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GameQueries } from '../services/useGameQl';
+import { GamesData } from '../services/getGames';
 import type { Games } from '../services/Types';
 
 export function useGames() {
@@ -13,10 +13,10 @@ export function useGames() {
         setLoading(true);
         setError('');
 
-        const gameService = new GameQueries();
+        const gameService = new GamesData();
         const gameData = await gameService.getGames();
         setGames(gameData);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(err.message ?? 'Failed to load games data');
       } finally {
@@ -29,5 +29,3 @@ export function useGames() {
 
   return { games, loading, error };
 }
-
-

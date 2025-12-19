@@ -1,5 +1,6 @@
 export interface Games {
-    id: number
+    id: string,
+    databaseId: number
     title: string
     slug: string
     image: string
@@ -9,6 +10,7 @@ export interface Games {
 }
 // Raw GraphQL response types for ACF
 export interface RawGameNode {
+    id: string,
     databaseId: number
     title: string
     slug: string
@@ -25,7 +27,8 @@ export interface RawGameNode {
 }
 
 export interface Genre {
-    id: number
+    id: string
+    databaseId: number
     title: string
     slug: string
     image: string
@@ -33,6 +36,7 @@ export interface Genre {
 
 // Raw GraphQL response types for ACF
 export interface RawGenreNode {
+    id: string
     databaseId: number
     title: string
     slug: string
@@ -42,7 +46,8 @@ export interface RawGenreNode {
 }
 
 export interface Platform {
-    id: number
+    id: string
+    databaseId: number
     title: string
     slug: string
 }
