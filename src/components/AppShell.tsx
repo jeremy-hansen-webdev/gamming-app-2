@@ -15,6 +15,7 @@ interface AppShellProps {
 export default function AppShell({ children }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+
   return (
     <div className='bg-zinc-800'>
       {/* Mobile sidebar */}

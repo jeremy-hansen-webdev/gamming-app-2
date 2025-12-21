@@ -1,4 +1,4 @@
-import type { Games, Genre, Platform } from '../services/Types';
+import type { Games, Genre, Platform } from '../services/formatters/Types';
 const GameCard = (game: Games) => {
   return (
     <div
@@ -16,12 +16,14 @@ const GameCard = (game: Games) => {
 
         <ul className="flex gap-2">
           {game.genre.map((genre: Genre) => (
-            <li key={genre.id}>{genre.title}</li>
+            <li key={genre.id}>{genre.name}</li>
           ))}
         </ul>
         <ul className="flex gap-2">
           {game.platform.map((platform: Platform) => (
-            <li key={platform.id}>{platform.title}</li>
+            <li key={platform.id}>
+              <img src={platform.platformIcon} alt={platform.platformIcon} />
+            </li>
           ))}
         </ul>
       </div>

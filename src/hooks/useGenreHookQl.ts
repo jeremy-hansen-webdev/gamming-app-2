@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { GenreQueries } from '../services/getGenres';
-import type { Genre } from '../services/Types';
+import { GenreQueries } from '../services/getAllData/getGenres';
+import type { Genre } from '../services/formatters/Types';
 
 export function useGenres() {
   const [genres, setGenres] = useState<Genre[]>([]);

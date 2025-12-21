@@ -1,5 +1,5 @@
 import { useGames } from '../hooks/useGameHookQl';
-import type { Games } from '../services/Types';
+import type { Games } from '../services/formatters/Types';
 import GameCard from './GameCard';
 
 const GameList = () => {
@@ -8,7 +8,7 @@ const GameList = () => {
   return (
     <div className="flex flex-wrap justify-center gap-10">
       {games.map((game: Games) => (
-        <GameCard {...game} />
+        <GameCard key={game.databaseId} {...game} />
       ))}
     </div>
   );

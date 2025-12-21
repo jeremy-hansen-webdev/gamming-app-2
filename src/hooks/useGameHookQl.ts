@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { GamesData } from '../services/getGames';
-import type { Games } from '../services/Types';
+import { GamesData } from '../services/getAllData/getGames';
+import type { Games } from '../services/formatters/Types';
 
 export function useGames() {
   const [games, setGames] = useState<Games[]>([]);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { PlatformQueries } from '../services/getPlatforms';
-import type { Platform } from '../services/Types';
+import { PlatformQueries } from '../services/getAllData/getPlatforms';
+import type { Platform } from '../services/formatters/Types';
 
 export function usePlatforms() {
   const [platforms, setPlatforms] = useState<Platform[]>([]);

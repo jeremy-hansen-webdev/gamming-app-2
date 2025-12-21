@@ -1,10 +1,8 @@
 // SidebarContent.tsx
 
-import { classNames } from '../entities/layoutConfit';
 import GenreList from './GenreList';
-import type { SidebarContentProps } from './types';
 
-export function SidebarContent({ navigation }: SidebarContentProps) {
+export function SidebarContent() {
   return (
     <div className="relative mt-8 pt-4 rounded-2xl flex grow flex-col gap-y-5 overflow-y-auto bg-amber-400 dark:bg-zinc-900 px-6 pb-4 ring-1 ring-white/10">
       <nav className="relative flex flex-1 flex-col">

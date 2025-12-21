@@ -1,16 +1,17 @@
-import { wpGraphqlClient } from './GameApiGraphQl.ts';
-import type { Genre, RawGenreNode } from './Types.ts';
+import { formatters } from '../formatters/formatters.ts';
+import { wpGraphqlClient } from '../GameApiGraphQl.ts';
+import type { Genre, RawGenreNode } from '../formatters/Types.ts';
 
 export class GenreQueries {
   async getGenres(): Promise<Genre[]> {
     const res = await wpGraphqlClient.post('', {
       query: /* GraphQL */ `
-        query Genres {
+        query Genre {
           genres {
             nodes {
               id
               databaseId
-              title
+              name
               slug
               genreFields {
                 image
@@ -21,15 +22,8 @@ export class GenreQueries {
       `,
     });
     const resData: RawGenreNode[] = res.data?.data?.genres?.nodes;
-    const formatData = resData.map((data) => ({
-      id: data.id,
-      databaseId: data.databaseId,
-      title: data.title,
-      slug: data.slug,
-      image: data.genreFields.image,
-    }));
 
-    return formatData;
+    return formatters.genres(resData);
   }
 }
 
