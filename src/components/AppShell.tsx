@@ -14,10 +14,14 @@ interface AppShellProps {
 
 export default function AppShell({ children }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [filterGenreId, setFilterGenreId] = useState(0);
 
+  const handleClick = (id: number) => {
+    setFilterGenreId(id);
+  };
 
   return (
-    <div className='bg-zinc-800'>
+    <div className="bg-zinc-800">
       {/* Mobile sidebar */}
       <MobileSidebar
         open={sidebarOpen}
@@ -27,7 +31,7 @@ export default function AppShell({ children }: AppShellProps) {
       />
 
       {/* Desktop sidebar */}
-      <DesktopSidebar navigation={navigation} teams={teams} />
+      <DesktopSidebar onClick={handleClick} />
 
       <div className="lg:pl-72">
         {/* Top bar */}
@@ -38,7 +42,7 @@ export default function AppShell({ children }: AppShellProps) {
           <div className="px-4 sm:px-6 lg:px-8">
             {children ?? (
               <div>
-                <GameList />
+                <GameList genreId={filterGenreId} />
               </div>
             )}
           </div>

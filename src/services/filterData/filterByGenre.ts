@@ -5,7 +5,7 @@ import type { Games, RawGameNode } from '../formatters/Types.ts';
 export class GamesByGenreData {
   constructor(private genreId: number) {}
 
-  async getGamesByGenre(): Promise<Games[]> {
+  async getGames(): Promise<Games[]> {
     try {
       const res = await wpGraphqlClient.post('', {
         query: /* GraphQL */ `
@@ -71,5 +71,5 @@ export class GamesByGenreData {
 
 (async () => {
   const svc = new GamesByGenreData(15);
-  console.log(await svc.getGamesByGenre());
+  console.log(await svc.getGames());
 })();

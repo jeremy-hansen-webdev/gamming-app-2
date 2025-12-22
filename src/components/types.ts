@@ -19,3 +19,7 @@ export interface SidebarContentProps {
   navigation: NavItem[];
   teams: Team[];
 }
+
+export interface GenreListProps {
+  onClick: (id: number) => void;
+}
