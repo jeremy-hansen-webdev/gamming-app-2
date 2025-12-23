@@ -33,10 +33,3 @@ export class PlatformQueries {
     return formatters.platforms(reqData);
   }
 }
-
-// quick local test
-(async () => {
-  const platformQueries = new PlatformQueries();
-  const platformData = await platformQueries.getPlatforms();
-  console.log(platformData);
-})();

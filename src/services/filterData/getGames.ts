@@ -1,11 +1,15 @@
 import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
 import type { Games, RawGameNode } from '../formatters/Types.ts';
+import { GameIdRepository } from './gameIDRepository.ts';
+import { GameIdFilterService } from './gameIDFilterService.ts';
 
-export class GamesByGenreData {
-  constructor(private gameIds: number) {}
+export class GamesDataFilter {
+  constructor(private gameIds: number[]) {}
 
   async getGames(): Promise<Games[]> {
+    if (!this.gameIds?.length) return [];
+
     try {
       const res = await wpGraphqlClient.post('', {
         query: /* GraphQL */ `
@@ -50,15 +54,17 @@ export class GamesByGenreData {
             }
           }
         `,
-        variables: { id: this.gameIds },
+        // ✅ MUST be "ids" to match $ids
+        variables: { ids: this.gameIds },
       });
 
-      const reqData: RawGameNode[] = res.data?.data?.genre?.games?.nodes;
-      // console.log(reqData);
-      if (!reqData) {
-        console.error('No data returned from API:', res.data);
+      // 🔍 log schema errors if any
+      if (res.data?.errors?.length) {
+        console.error('GraphQL errors:', res.data.errors);
         return [];
       }
+
+      const reqData: RawGameNode[] = res.data?.data?.games?.nodes ?? [];
       return formatters.games(reqData);
     } catch (error) {
       console.error('Error fetching games:', error);
@@ -67,3 +73,11 @@ export class GamesByGenreData {
   }
 }
 
+(async () => {
+  const repo = new GameIdRepository();
+  const filterService = new GameIdFilterService(repo);
+  const ids = await filterService.getIds({ genreId: 15, platformId: 19 });
+
+  const svc = new GamesData(ids);
+  console.log(await svc.getGames());
+})();

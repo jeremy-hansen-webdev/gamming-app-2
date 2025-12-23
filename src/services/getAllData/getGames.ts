@@ -3,11 +3,13 @@ import { wpGraphqlClient } from '../GameApiGraphQl.ts';
 import type { Games, RawGameNode } from '../formatters/Types.ts';
 
 export class GamesData {
+
   async getGames(): Promise<Games[]> {
+
     try {
       const res = await wpGraphqlClient.post('', {
         query: /* GraphQL */ `
-          query Games {
+          query {
             games {
               nodes {
                 id
@@ -50,12 +52,13 @@ export class GamesData {
         `,
       });
 
-      const reqData: RawGameNode[] = res.data?.data?.games?.nodes;
-      // console.log(reqData);
-      if (!reqData) {
-        console.error('No data returned from API:', res.data);
+      // 🔍 log schema errors if any
+      if (res.data?.errors?.length) {
+        console.error('GraphQL errors:', res.data.errors);
         return [];
       }
+
+      const reqData: RawGameNode[] = res.data?.data?.games?.nodes ?? [];
       return formatters.games(reqData);
     } catch (error) {
       console.error('Error fetching games:', error);
@@ -65,7 +68,8 @@ export class GamesData {
 }
 
 (async () => {
-  const gameServices = new GamesData();
-  const gameData = await gameServices.getGames();
-  console.log(gameData);
-})();
+  const games = new GamesData()
+  const gamesData = await games.getGames()
+  console.log(gamesData)
+
+})()

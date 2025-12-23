@@ -5,7 +5,7 @@ import type { Games, RawGameNode } from '../formatters/Types.ts';
 export class GamesByPlatformData {
   constructor(private platformId: number) {}
 
-  async getGamesByPlatform(): Promise<Games[]> {
+  async getGames(): Promise<Games[]> {
     try {
       const res = await wpGraphqlClient.post('', {
         query: /* GraphQL */ `
@@ -68,8 +68,3 @@ export class GamesByPlatformData {
     }
   }
 }
-
-(async () => {
-  const svc = new GamesByPlatformData(19);
-  console.log(await svc.getGamesByPlatform());
-})();

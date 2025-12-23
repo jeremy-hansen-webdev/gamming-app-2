@@ -26,9 +26,3 @@ export class GenreQueries {
     return formatters.genres(resData);
   }
 }
-
-(async () => {
-  const genreQueries = new GenreQueries();
-  const genreData = await genreQueries.getGenres();
-  console.log(genreData);
-})();

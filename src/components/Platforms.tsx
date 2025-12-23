@@ -1,12 +1,35 @@
-import
+import { usePlatforms } from '../hooks/usePlatformHookQl';
 
-const Platforms = () => {
-  return (
-    <div>
-      <label htmlFor="platform">Platform</label>
-      <select name="platform" id="platform"></select>
-    </div>
-  );
+interface PlatformsProps {
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default Platforms
+const Platforms = ({ onChange }: PlatformsProps) => {
+  const { platforms } = usePlatforms();
+
+  return (
+    <div className="mb-5">
+      <label className="text-2xl text-zinc-300 p-2.5" htmlFor="platform">
+        Platform
+      </label>
+      <select
+        name="platform"
+        id="platform"
+        className="bg-zinc-300 rounded-[8%] text-[20px]"
+        onChange={onChange}
+        defaultValue="selectDefault"
+      >
+        <option value="selectDefault" disabled>
+          Select One
+        </option>
+        {platforms.map((platform) => (
+          <option value={platform.databaseId} key={platform.databaseId}>
+            {platform.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export default Platforms;
