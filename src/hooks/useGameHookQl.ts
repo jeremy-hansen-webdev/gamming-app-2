@@ -9,6 +9,7 @@ import { SortGames } from '../services/filterData/sortGames.ts';
 interface QueryOptions {
   genreId: number;
   platformId: number;
+  theSearchValue: string;
   sortId: number;
 }
 
@@ -26,12 +27,18 @@ export function useGamesFilter(queryOptions: QueryOptions) {
         setError(null);
 
         let gamesList: Games[] = [];
-        if (queryOptions.genreId || queryOptions.platformId) {
+        // Get Genre and PlatformId Query Options
+        if (
+          queryOptions.genreId ||
+          queryOptions.platformId ||
+          queryOptions.theSearchValue
+        ) {
           const repo = new GameIdRepository();
           const filterService = new GameIdFilterService(repo);
-          const ids = await filterService.getIdsINtersection({
+          const ids = await filterService.getIdsIntersection({
             genreId: queryOptions.genreId,
             platformId: queryOptions.platformId,
+            searchValue: queryOptions.theSearchValue,
           });
           const svc = new GamesDataFilter(ids);
           gamesList = await svc.getGames();
@@ -43,10 +50,6 @@ export function useGamesFilter(queryOptions: QueryOptions) {
         // Call sort options
         const sortGames = new SortGames(gamesList, queryOptions.sortId);
         gamesList = sortGames.sortData();
-        // gamesList = sortGames.sortByGenre();
-        // gamesList = sortGames.sortByPlatform();
-
-        // Call Sort options
 
         if (isMounted) {
           setGames(gamesList);

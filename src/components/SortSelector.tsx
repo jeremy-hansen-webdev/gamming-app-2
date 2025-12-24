@@ -1,8 +1,9 @@
 interface SortformsProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  sortId: number;
 }
 
-const SortOptions = ({ onChange }: SortformsProps) => {
+const SortOptions = ({ onChange, sortId }: SortformsProps) => {
   return (
     <div className="mb-5">
       <label className="text-2xl text-zinc-300 p-2.5" htmlFor="genre">
@@ -13,9 +14,9 @@ const SortOptions = ({ onChange }: SortformsProps) => {
         id="genre"
         className="bg-zinc-300 rounded-[8%] text-[20px]"
         onChange={onChange}
-        defaultValue="selectDefault"
+        value={sortId}
       >
-        <option value="selectDefault" disabled>
+        <option value={0} disabled>
           Select One
         </option>
         <option value={1}>Title</option>

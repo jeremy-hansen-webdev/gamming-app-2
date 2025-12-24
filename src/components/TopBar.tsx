@@ -7,12 +7,26 @@ import {
   MagnifyingGlassIcon,
 } from '../entities/layoutConfit';
 import { userNavigation } from '../entities/layoutConfit';
+import { useState } from 'react';
 
 interface TopbarProps {
   onOpenSidebar: () => void;
+  onSubmit: (value: string) => void;
 }
 
-export function Topbar({ onOpenSidebar }: TopbarProps) {
+export function Topbar({ onOpenSidebar, onSubmit }: TopbarProps) {
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
+    onSubmit(searchInput);
+    setSearchInput('');
+  };
+
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b bg-zinc-600 px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
       <button
@@ -29,8 +43,10 @@ export function Topbar({ onOpenSidebar }: TopbarProps) {
 
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         {/* Search */}
-        <form action="#" method="GET" className="grid flex-1 grid-cols-1">
+        <form onSubmit={handleSubmit} className="grid flex-1 grid-cols-1">
           <input
+            value={searchInput}
+            onChange={handleInput}
             name="search"
             placeholder="Search"
             aria-label="Search"

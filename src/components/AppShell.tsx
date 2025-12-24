@@ -15,9 +15,14 @@ interface AppShellProps {
 export default function AppShell({ children }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterGenreId, setFilterGenreId] = useState(0);
+  const [search, setSearch] = useState('');
 
   const handleClick = (id: number) => {
     setFilterGenreId(id);
+  };
+
+  const handleSearchSubmit = (value: string) => {
+    setSearch(value);
   };
 
   return (
@@ -35,14 +40,17 @@ export default function AppShell({ children }: AppShellProps) {
 
       <div className="lg:pl-72">
         {/* Top bar */}
-        <Topbar onOpenSidebar={() => setSidebarOpen(true)} />
+        <Topbar
+          onOpenSidebar={() => setSidebarOpen(true)}
+          onSubmit={handleSearchSubmit}
+        />
 
         {/* Main content */}
         <main className="py-10">
           <div className="px-4 sm:px-6 lg:px-8">
             {children ?? (
               <div>
-                <GameList genreId={filterGenreId} />
+                <GameList genreId={filterGenreId} searchValue={search} />
               </div>
             )}
           </div>

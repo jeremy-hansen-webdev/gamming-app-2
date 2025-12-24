@@ -2,9 +2,10 @@ import { usePlatforms } from '../hooks/usePlatformHookQl';
 
 interface PlatformsProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  platformId: number;
 }
 
-const Platforms = ({ onChange }: PlatformsProps) => {
+const Platforms = ({ onChange, platformId }: PlatformsProps) => {
   const { platforms } = usePlatforms();
 
   return (
@@ -17,9 +18,9 @@ const Platforms = ({ onChange }: PlatformsProps) => {
         id="platform"
         className="bg-zinc-300 rounded-[8%] text-[20px]"
         onChange={onChange}
-        defaultValue="selectDefault"
+        value={platformId}
       >
-        <option value="selectDefault" disabled>
+        <option value={0} disabled>
           Select One
         </option>
         {platforms.map((platform) => (
