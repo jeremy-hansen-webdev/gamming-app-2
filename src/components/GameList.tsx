@@ -8,6 +8,7 @@ import SortOptions from './SortSelector';
 interface GameListProps {
   genreId: number;
   searchValue: string;
+
 }
 
 const GameList = ({ genreId, searchValue }: GameListProps) => {

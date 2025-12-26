@@ -1,10 +1,7 @@
 import { useGenres } from '../hooks/useGenreHookQl';
+import type { GenreFilterProp } from './DesktopSidebar';
 
-export interface GenreListProps {
-  onClick: (genreId: number) => void;
-}
-
-const GenreList: React.FC<GenreListProps> = ({ onClick }) => {
+const GenreList: React.FC<GenreFilterProp> = ({ onGenreClick }) => {
   const { genres, loading } = useGenres();
 
   if (loading) {
@@ -19,7 +16,7 @@ const GenreList: React.FC<GenreListProps> = ({ onClick }) => {
       {genres.map((g) => (
         <li className="text-zinc-300" key={g.databaseId}>
           <div
-            onClick={() => onClick(g.databaseId)}
+            onClick={() => onGenreClick(g.databaseId)}
             className="flex gap-3 rounded-2xl my-3 p-3 items-center cursor-pointer hover:bg-zinc-600"
           >
             <img className="w-24 h-12 rounded-[10%]" src={g.image} alt="" />

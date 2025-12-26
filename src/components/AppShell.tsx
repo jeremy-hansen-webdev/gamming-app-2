@@ -17,7 +17,7 @@ export default function AppShell({ children }: AppShellProps) {
   const [filterGenreId, setFilterGenreId] = useState(0);
   const [search, setSearch] = useState('');
 
-  const handleClick = (id: number) => {
+  const handleClickGenreFilter = (id: number) => {
     setFilterGenreId(id);
   };
 
@@ -33,10 +33,11 @@ export default function AppShell({ children }: AppShellProps) {
         onClose={setSidebarOpen}
         navigation={navigation}
         teams={teams}
+        onGenreClick={handleClickGenreFilter}
       />
 
       {/* Desktop sidebar */}
-      <DesktopSidebar onClick={handleClick} />
+      <DesktopSidebar onGenreClick={handleClickGenreFilter} />
 
       <div className="lg:pl-72">
         {/* Top bar */}

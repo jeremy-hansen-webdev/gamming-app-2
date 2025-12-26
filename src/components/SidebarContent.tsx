@@ -30,7 +30,7 @@ export function SidebarContent({ onGenreClick }: SidebarContentProps) {
           <li>
             <ul role="list" className="-mx-2 space-y-1">
               {/* ✅ pass the click handler to GenreList */}
-              <GenreList onClick={onGenreClick} />
+              <GenreList onGenreClick={onGenreClick} />
             </ul>
           </li>
 
