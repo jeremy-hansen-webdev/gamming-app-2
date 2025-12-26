@@ -1,7 +1,7 @@
 // SidebarContent.tsx
 
-import type { GenreListProps } from './types';
 import GenreList from './GenreList';
+import type { GenreListProps } from './GenreList';
 
 export function SidebarContent({ onClick }: GenreListProps) {
   return (

@@ -1,7 +1,10 @@
 import { useGenres } from '../hooks/useGenreHookQl';
-import type { GenreListProps } from './types';
 
-const GenreList = ({ onClick }: GenreListProps) => {
+export interface GenreListProps {
+  onClick: (genreId: number) => void;
+}
+
+const GenreList: React.FC<GenreListProps> = ({ onClick }) => {
   const { genres, loading } = useGenres();
 
   if (loading) {
@@ -12,7 +15,7 @@ const GenreList = ({ onClick }: GenreListProps) => {
     );
   }
   return (
-    <div>
+    <ul>
       {genres.map((g) => (
         <li className="text-zinc-300" key={g.databaseId}>
           <div
@@ -24,7 +27,7 @@ const GenreList = ({ onClick }: GenreListProps) => {
           </div>
         </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
