@@ -1,4 +1,4 @@
-import { usePlatforms } from '../hooks/usePlatformHookQl';
+import { usePlatforms } from '../hooks/usePlatform';
 
 interface PlatformsProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -6,7 +6,7 @@ interface PlatformsProps {
 }
 
 const Platforms = ({ onChange, platformId }: PlatformsProps) => {
-  const { platforms } = usePlatforms();
+  const { data: platforms = [] } = usePlatforms();
 
   return (
     <div className="mb-5">

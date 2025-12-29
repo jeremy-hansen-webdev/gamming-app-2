@@ -1,10 +1,14 @@
-import { useGenres } from '../hooks/useGenreHookQl';
+import { useGenres } from '../hooks/useGenreHook';
 import type { GenreFilterProp } from './DesktopSidebar';
 
 const GenreList: React.FC<GenreFilterProp> = ({ onGenreClick }) => {
-  const { genres, loading } = useGenres();
+  const { data: genres = [], isLoading, error } = useGenres();
 
-  if (loading) {
+  if (error) {
+    return <p>Genre List Couldn't be retrieved</p>;
+  }
+
+  if (isLoading) {
     return (
       <div className="inline-flex items-center justify-center">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-transparent" />
