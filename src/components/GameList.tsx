@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useGamesFilter } from '../hooks/useGameHookQl';
+import { useGamesFilter } from '../hooks/useGameHook';
 import type { Games } from '../services/formatters/Types';
 import GameCard from './GameCard';
 import Platforms from './PlatformsSelector';
@@ -8,7 +8,6 @@ import SortOptions from './SortSelector';
 interface GameListProps {
   genreId: number;
   searchValue: string;
-
 }
 
 const GameList = ({ genreId, searchValue }: GameListProps) => {
@@ -30,7 +29,7 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
     [genreIdState, platformId, sortId, theSearchValue]
   );
 
-  const { games } = useGamesFilter(queryOptions);
+  const { data: games = [], isLoading } = useGamesFilter(queryOptions);
 
   const handlePlatformId = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatformId(Number(e.target.value));
@@ -46,6 +45,8 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
     setSortId(0);
     setTheSearchValue('');
   };
+
+  if (isLoading) return <h1 className="text-2xl text-zinc-50">Loading...</h1>;
 
   return (
     <>

@@ -3,33 +3,31 @@ import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
 import type { Platform, RawPlatformNode } from '../formatters/Types.ts';
 
-export class PlatformQueries {
-  async getPlatforms(): Promise<Platform[]> {
-    const res = await wpGraphqlClient.post('', {
-      query: /* GraphQL */ `
-        query Platforms {
-          platforms {
-            nodes {
-              id
-              databaseId
-              name
-              slug
-              platformFields {
-                platformIcon {
-                  node {
-                    sourceUrl
-                  }
+export async function getPlatforms(): Promise<Platform[]> {
+  const res = await wpGraphqlClient.post('', {
+    query: /* GraphQL */ `
+      query Platforms {
+        platforms {
+          nodes {
+            id
+            databaseId
+            name
+            slug
+            platformFields {
+              platformIcon {
+                node {
+                  sourceUrl
                 }
               }
             }
           }
         }
-      `,
-    });
+      }
+    `,
+  });
 
-    // ✅ correct path
-    const reqData: RawPlatformNode[] = res.data?.data?.platforms?.nodes ?? [];
+  // ✅ correct path
+  const reqData: RawPlatformNode[] = res.data?.data?.platforms?.nodes ?? [];
 
-    return formatters.platforms(reqData);
-  }
+  return formatters.platforms(reqData);
 }

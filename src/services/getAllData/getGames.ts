@@ -2,9 +2,9 @@ import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
 import type { Games, RawGameNode } from '../formatters/Types.ts';
 
-export class GamesData {
 
-  async getGames(): Promise<Games[]> {
+
+  export async function getGames(): Promise<Games[]> {
 
     try {
       const res = await wpGraphqlClient.post('', {
@@ -65,11 +65,7 @@ export class GamesData {
       return [];
     }
   }
-}
 
-(async () => {
-  const games = new GamesData()
-  const gamesData = await games.getGames()
-  console.log(gamesData)
 
-})()
+const games = await getGames()
+console.log(games)

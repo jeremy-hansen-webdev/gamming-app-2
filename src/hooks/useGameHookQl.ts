@@ -3,7 +3,7 @@ import { GamesDataFilter } from '../services/filterData/getFilteredGamesById.ts'
 import type { Games } from '../services/formatters/Types.ts';
 import { GameIdRepository } from '../services/filterData/gameIDRepository.ts';
 import { GameIdFilterService } from '../services/filterData/gameIDFilterService.ts';
-import { GamesData } from '../services/getAllData/getGames.ts';
+import { getGames } from '../services/getAllData/getGames.ts';
 import { SortGames } from '../services/filterData/sortGames.ts';
 
 interface QueryOptions {
@@ -43,8 +43,7 @@ export function useGamesFilter(queryOptions: QueryOptions) {
           const svc = new GamesDataFilter(ids);
           gamesList = await svc.getGames();
         } else {
-          const games = new GamesData();
-          gamesList = await games.getGames();
+          gamesList = await getGames();
         }
 
         // Call sort options
