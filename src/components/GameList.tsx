@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useGamesFilter } from '../hooks/useGameHook';
-import type { Games } from '../services/formatters/Types';
+import type { GameNodeHeader, Games } from '../services/formatters/Types';
 import GameCard from './GameCard';
 import Platforms from './PlatformsSelector';
 import SortOptions from './SortSelector';
@@ -15,6 +15,8 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
   const [sortId, setSortId] = useState(0);
   const [genreIdState, setGenreId] = useState(genreId);
   const [theSearchValue, setTheSearchValue] = useState(searchValue);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [nextCursor, setNextCursor] = useState('');
 
   useEffect(() => {
     setGenreId(genreId);
@@ -25,11 +27,27 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
   }, [searchValue]);
 
   const queryOptions = useMemo(
-    () => ({ genreId: genreIdState, platformId, sortId, theSearchValue }),
-    [genreIdState, platformId, sortId, theSearchValue]
+    () => ({
+      genreId: genreIdState,
+      platformId,
+      sortId,
+      theSearchValue,
+      nextCursor,
+    }),
+    [genreIdState, platformId, sortId, theSearchValue, nextCursor]
   );
+  console.log('Query Options ', queryOptions);
+  const {
+    data: games = {
+      pageInfo: { hasNextPage: false, endCursor: '' },
+      nodes: [],
+    },
+    isLoading,
+  } = useGamesFilter(queryOptions);
 
-  const { data: games = [], isLoading } = useGamesFilter(queryOptions);
+  useEffect(() => {
+    setNextCursor(games.pageInfo.endCursor ?? '');
+  }, [games.pageInfo.endCursor]);
 
   const handlePlatformId = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatformId(Number(e.target.value));
@@ -60,11 +78,15 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
           Reset
         </button>
       </div>
+      <h1 className="bg-zinc-50">{games.pageInfo.endCursor}</h1>
       <div className="flex flex-wrap justify-center gap-10">
-        {games.map((game: Games) => (
-          <GameCard key={game.databaseId} {...game} />
+        {games.nodes.map((game: Games) => (
+          <GameCard key={game.id} {...game} />
         ))}
       </div>
+      <button className="bg-zinc-400 text-zinc-950 cursor-pointer p-1 rounded-2xl">
+        Load More
+      </button>
     </>
   );
 };

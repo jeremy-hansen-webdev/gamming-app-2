@@ -9,6 +9,11 @@ export interface Games {
   platform: Platform[];
 }
 
+export interface GameNodeHeader {
+  pageInfo: PageInfoHeader;
+  nodes: Games[];
+}
+
 export interface Genre {
   id: string;
   databaseId: number;
@@ -23,6 +28,11 @@ export interface Platform {
   name: string;
   slug: string;
   platformIcon: string;
+}
+
+export interface PageInfoHeader {
+  endCursor: string | null;
+  hasNextPage: boolean;
 }
 
 // Raw GraphQL response types
@@ -40,6 +50,13 @@ export interface RawGameNode {
   };
   platforms: {
     nodes: RawPlatformNode[];
+  };
+}
+
+export interface RawGameNodeHeader {
+  games: {
+    pageInfo: PageInfoHeader;
+    nodes: RawGameNode[];
   };
 }
 

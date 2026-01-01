@@ -1,15 +1,21 @@
 import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
-import type { Games, RawGameNode } from '../formatters/Types.ts';
+import type { GameNodeHeader, RawGameNodeHeader } from '../formatters/Types.ts';
 
-export async function getGamesFilter(gameIds: number[]): Promise<Games[]> {
-  if (!gameIds?.length) return [];
-
+export async function getGamesFilter(
+  gameIds: (string | number)[],
+  first: number,
+  after: string | null
+): Promise<GameNodeHeader> {
   try {
     const res = await wpGraphqlClient.post('', {
       query: /* GraphQL */ `
-        query GamesByIds($ids: [ID!]!) {
-          games(where: { in: $ids }) {
+        query GamesByIds($ids: [ID!]!, $first: Int!, $after: String) {
+          games(where: { in: $ids }, first: $first, after: $after) {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
             nodes {
               id
               databaseId
@@ -49,23 +55,21 @@ export async function getGamesFilter(gameIds: number[]): Promise<Games[]> {
           }
         }
       `,
-      // ✅ MUST be "ids" to match $ids
-      variables: { ids: gameIds },
+      variables: { ids: gameIds, first, after },
     });
 
-    // 🔍 log schema errors if any
     if (res.data?.errors?.length) {
       console.error('GraphQL errors:', res.data.errors);
-      return [];
+      return { pageInfo: { endCursor: null, hasNextPage: false }, nodes: [] };
     }
 
-    const reqData: RawGameNode[] = res.data?.data?.games?.nodes ?? [];
-    return formatters.games(reqData);
+    const data = res.data?.data as RawGameNodeHeader;
+    return formatters.games(data);
   } catch (error) {
     console.error('Error fetching games:', error);
-    return [];
+    return { pageInfo: { endCursor: null, hasNextPage: false }, nodes: [] };
   }
 }
 
-const res = await getGamesFilter([72, 69, 68]);
+const res = await getGamesFilter([72, 69, 68], 5, null);
 console.log(res);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GamesDataFilter } from '../services/filterData/getFilteredGamesById.ts';
+import { getGamesFilter } from '../services/filterData/getFilteredGamesById.ts';
 import type { Games } from '../services/formatters/Types.ts';
 import { GameIdRepository } from '../services/filterData/gameIDRepository.ts';
 import { GameIdFilterService } from '../services/filterData/gameIDFilterService.ts';
@@ -40,8 +40,7 @@ export function useGamesFilter(queryOptions: QueryOptions) {
             platformId: queryOptions.platformId,
             searchValue: queryOptions.theSearchValue,
           });
-          const svc = new GamesDataFilter(ids);
-          gamesList = await svc.getGames();
+          gamesList = await getGamesFilter(ids)
         } else {
           gamesList = await getGames();
         }

@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import type { Games } from '../services/formatters/Types';
+import {useQuery } from '@tanstack/react-query';
+import type { GameNodeHeader, Games } from '../services/formatters/Types';
 import { getGamesFilter } from '../services/filterData/getFilteredGamesById';
 import { GameIdRepository } from '../services/filterData/gameIDRepository';
 import { GameIdFilterService } from '../services/filterData/gameIDFilterService';
@@ -11,14 +11,20 @@ interface QueryOptions {
   platformId: number;
   theSearchValue: string;
   sortId: number;
+  nextCursor: string;
 }
+
+
 
 export function useGamesFilter(queryOptions: QueryOptions) {
   const hasSearch = queryOptions.theSearchValue.trim().length > 0;
   const hasFilters =
     queryOptions.genreId !== 0 || queryOptions.platformId !== 0 || hasSearch;
 
-  return useQuery<Games[], Error>({
+  return useQuery<
+    { pageInfo: GameNodeHeader['pageInfo']; nodes: Games[] },
+    Error
+  >({
     queryKey: [
       'games',
       queryOptions.genreId,
@@ -28,7 +34,7 @@ export function useGamesFilter(queryOptions: QueryOptions) {
     ],
 
     queryFn: async () => {
-      let gamesList: Games[];
+      let gamesList: GameNodeHeader;
 
       if (hasFilters) {
         const repo = new GameIdRepository();
@@ -40,18 +46,19 @@ export function useGamesFilter(queryOptions: QueryOptions) {
           searchValue: queryOptions.theSearchValue.trim(),
         });
 
-        console.log('Filters:', queryOptions);
-        console.log('Intersection ids:', ids.length, ids.slice(0, 10));
-
-        gamesList = await getGamesFilter(ids);
-        console.log('Filtered games returned:', gamesList.length);
+        gamesList = await getGamesFilter(ids, 5, queryOptions.nextCursor);
       } else {
-        gamesList = await getGames();
-        console.log('All games returned:', gamesList.length);
+        gamesList = await getGames(5, queryOptions.nextCursor);
       }
 
-      const sortGames = new SortGames(gamesList, queryOptions.sortId);
-      return sortGames.sortData();
+      const sortGames = new SortGames(gamesList.nodes, queryOptions.sortId);
+
+      const sortedGames = {
+        pageInfo: gamesList.pageInfo,
+        nodes: sortGames.sortData(),
+      };
+
+      return sortedGames;
     },
 
     staleTime: 1000 * 60 * 5,
