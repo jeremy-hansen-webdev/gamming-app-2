@@ -65,5 +65,5 @@ export async function getGames(
   }
 }
 
-const games = await getGames(5, 'YXJyYXljb25uZWN0aW9uOjY4');
+const games = await getGames(8, null);
 console.log(games);

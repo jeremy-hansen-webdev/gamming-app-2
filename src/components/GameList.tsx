@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useGamesFilter } from '../hooks/useGameHook';
-import type { GameNodeHeader, Games } from '../services/formatters/Types';
+import { useInfiniteGamesFilter } from '../hooks/useGameHook';
+import type { Games } from '../services/formatters/Types';
 import GameCard from './GameCard';
 import Platforms from './PlatformsSelector';
 import SortOptions from './SortSelector';
@@ -15,8 +15,6 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
   const [sortId, setSortId] = useState(0);
   const [genreIdState, setGenreId] = useState(genreId);
   const [theSearchValue, setTheSearchValue] = useState(searchValue);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [nextCursor, setNextCursor] = useState('');
 
   useEffect(() => {
     setGenreId(genreId);
@@ -32,22 +30,19 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
       platformId,
       sortId,
       theSearchValue,
-      nextCursor,
     }),
-    [genreIdState, platformId, sortId, theSearchValue, nextCursor]
+    [genreIdState, platformId, sortId, theSearchValue]
   );
-  console.log('Query Options ', queryOptions);
-  const {
-    data: games = {
-      pageInfo: { hasNextPage: false, endCursor: '' },
-      nodes: [],
-    },
-    isLoading,
-  } = useGamesFilter(queryOptions);
 
-  useEffect(() => {
-    setNextCursor(games.pageInfo.endCursor ?? '');
-  }, [games.pageInfo.endCursor]);
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteGamesFilter(queryOptions);
+  // @ts-expect-error -- React Query infinite data has pages
+  const games = data?.pages.flatMap((p) => p.nodes) ?? [];
+  // @ts-expect-error -- React Query infinite data has pages
+  const endCursor = data?.pages.at(-1).pageInfo.endCursor ?? '';
+  console.log('endCursor', endCursor);
+
+  // const games: Games[]
 
   const handlePlatformId = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPlatformId(Number(e.target.value));
@@ -78,14 +73,20 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
           Reset
         </button>
       </div>
-      <h1 className="bg-zinc-50">{games.pageInfo.endCursor}</h1>
       <div className="flex flex-wrap justify-center gap-10">
-        {games.nodes.map((game: Games) => (
+        {games.map((game: Games) => (
           <GameCard key={game.id} {...game} />
         ))}
       </div>
-      <button className="bg-zinc-400 text-zinc-950 cursor-pointer p-1 rounded-2xl">
-        Load More
+      <button
+        className="bg-zinc-400 text-zinc-950 cursor-pointer p-1 rounded-2xl"
+        onClick={() => fetchNextPage()}
+      >
+        {isFetchingNextPage
+          ? 'Loading...'
+          : hasNextPage
+            ? 'Load More'
+            : 'No More'}
       </button>
     </>
   );

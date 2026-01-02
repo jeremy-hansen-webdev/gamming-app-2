@@ -1,4 +1,4 @@
-import {useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import type { GameNodeHeader, Games } from '../services/formatters/Types';
 import { getGamesFilter } from '../services/filterData/getFilteredGamesById';
 import { GameIdRepository } from '../services/filterData/gameIDRepository';
@@ -11,29 +11,34 @@ interface QueryOptions {
   platformId: number;
   theSearchValue: string;
   sortId: number;
-  nextCursor: string;
 }
 
+const LIMIT = 8;
 
-
-export function useGamesFilter(queryOptions: QueryOptions) {
+export function useInfiniteGamesFilter(queryOptions: QueryOptions) {
   const hasSearch = queryOptions.theSearchValue.trim().length > 0;
   const hasFilters =
     queryOptions.genreId !== 0 || queryOptions.platformId !== 0 || hasSearch;
 
-  return useQuery<
+  return useInfiniteQuery<
     { pageInfo: GameNodeHeader['pageInfo']; nodes: Games[] },
-    Error
+    Error,
+    { pageInfo: GameNodeHeader['pageInfo']; nodes: Games[] },
+    (string | number)[],
+    string | null
   >({
     queryKey: [
       'games',
+      LIMIT,
       queryOptions.genreId,
       queryOptions.platformId,
       queryOptions.theSearchValue,
       queryOptions.sortId,
     ],
 
-    queryFn: async () => {
+    initialPageParam: null,
+
+    queryFn: async ({ pageParam }) => {
       let gamesList: GameNodeHeader;
 
       if (hasFilters) {
@@ -46,9 +51,9 @@ export function useGamesFilter(queryOptions: QueryOptions) {
           searchValue: queryOptions.theSearchValue.trim(),
         });
 
-        gamesList = await getGamesFilter(ids, 5, queryOptions.nextCursor);
+        gamesList = await getGamesFilter(ids, LIMIT, pageParam);
       } else {
-        gamesList = await getGames(5, queryOptions.nextCursor);
+        gamesList = await getGames(LIMIT, pageParam);
       }
 
       const sortGames = new SortGames(gamesList.nodes, queryOptions.sortId);
@@ -58,10 +63,14 @@ export function useGamesFilter(queryOptions: QueryOptions) {
         nodes: sortGames.sortData(),
       };
 
+      console.log('sorted Games, ', sortGames);
+
       return sortedGames;
     },
 
+    getNextPageParam: (lastPage) =>
+      lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
+
     staleTime: 1000 * 60 * 5,
-    // optional: keepPreviousData: true,
   });
 }
