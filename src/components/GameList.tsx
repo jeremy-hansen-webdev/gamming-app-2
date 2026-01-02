@@ -1,3 +1,4 @@
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useMemo, useEffect } from 'react';
 import { useInfiniteGamesFilter } from '../hooks/useGameHook';
 import type { Games } from '../services/formatters/Types';
@@ -34,7 +35,7 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
     [genreIdState, platformId, sortId, theSearchValue]
   );
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteGamesFilter(queryOptions);
   // @ts-expect-error -- React Query infinite data has pages
   const games = data?.pages.flatMap((p) => p.nodes) ?? [];
@@ -73,21 +74,19 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
           Reset
         </button>
       </div>
-      <div className="flex flex-wrap justify-center gap-10">
-        {games.map((game: Games) => (
-          <GameCard key={game.id} {...game} />
-        ))}
-      </div>
-      <button
-        className="bg-zinc-400 text-zinc-950 cursor-pointer p-1 rounded-2xl"
-        onClick={() => fetchNextPage()}
+      <InfiniteScroll
+        dataLength={games.length}
+        next={() => fetchNextPage()}
+        hasMore={!!hasNextPage}
+        loader={<p className="text-zinc-200">Loading more...</p>}
+        endMessage={<p className="text-zinc-200">No more games</p>}
       >
-        {isFetchingNextPage
-          ? 'Loading...'
-          : hasNextPage
-            ? 'Load More'
-            : 'No More'}
-      </button>
+        <div className="flex flex-wrap justify-center gap-10">
+          {games.map((game: Games) => (
+            <GameCard key={game.id} {...game} />
+          ))}
+        </div>
+      </InfiniteScroll>
     </>
   );
 };
