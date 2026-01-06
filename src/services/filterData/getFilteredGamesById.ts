@@ -71,5 +71,5 @@ export async function getGamesFilter(
   }
 }
 
-const res = await getGamesFilter([72, 69, 68], 5, null);
-console.log(res);
+// const res = await getGamesFilter([72, 69, 68], 5, null);
+// console.log(res);

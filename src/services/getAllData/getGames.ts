@@ -2,10 +2,9 @@ import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
 import type { GameNodeHeader, RawGameNodeHeader } from '../formatters/Types.ts';
 
-export async function getGames(
-  first: number,
-  after: string | null
-): Promise<GameNodeHeader> {
+const LIMIT = 8;
+
+export async function getGames(after: string | null): Promise<GameNodeHeader> {
   try {
     const res = await wpGraphqlClient.post('', {
       query: /* GraphQL */ `
@@ -54,7 +53,7 @@ export async function getGames(
           }
         }
       `,
-      variables: { first: first, after: after },
+      variables: { first: LIMIT, after: after },
     });
 
     const data = res.data?.data as RawGameNodeHeader;
@@ -65,5 +64,5 @@ export async function getGames(
   }
 }
 
-const games = await getGames(8, null);
-console.log(games);
+// const games = await getGames(8, null);
+// console.log(games);
