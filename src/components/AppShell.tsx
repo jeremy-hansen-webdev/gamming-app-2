@@ -14,16 +14,6 @@ interface AppShellProps {
 
 export default function AppShell({ children }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [filterGenreId, setFilterGenreId] = useState(0);
-  const [search, setSearch] = useState('');
-
-  const handleClickGenreFilter = (id: number) => {
-    setFilterGenreId(id);
-  };
-
-  const handleSearchSubmit = (value: string) => {
-    setSearch(value);
-  };
 
   return (
     <div className="bg-zinc-800">
@@ -33,17 +23,16 @@ export default function AppShell({ children }: AppShellProps) {
         onClose={setSidebarOpen}
         navigation={navigation}
         teams={teams}
-        onGenreClick={handleClickGenreFilter}
       />
 
       {/* Desktop sidebar */}
-      <DesktopSidebar onGenreClick={handleClickGenreFilter} />
+      <DesktopSidebar />
 
       <div className="lg:pl-72">
         {/* Top bar */}
         <Topbar
           onOpenSidebar={() => setSidebarOpen(true)}
-          onSubmit={handleSearchSubmit}
+
         />
 
         {/* Main content */}
@@ -51,7 +40,7 @@ export default function AppShell({ children }: AppShellProps) {
           <div className="px-4 sm:px-6 lg:px-8">
             {children ?? (
               <div>
-                <GameList genreId={filterGenreId} searchValue={search} />
+                <GameList />
               </div>
             )}
           </div>

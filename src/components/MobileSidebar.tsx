@@ -7,6 +7,7 @@ import {
 } from '@headlessui/react';
 import { XMarkIcon } from '../entities/layoutConfit';
 import { SidebarContent } from './SidebarContent';
+import { useGameQueryStore } from '../store/store';
 
 interface NavItem {
   name: string;
@@ -28,7 +29,6 @@ interface MobileSidebarProps {
   onClose: (open: boolean) => void;
   navigation: NavItem[];
   teams: Team[];
-  onGenreClick: (id: number) => void; // ✅ add this
 }
 
 export function MobileSidebar({
@@ -36,8 +36,8 @@ export function MobileSidebar({
   onClose,
   navigation,
   teams,
-  onGenreClick, // ✅ receive it
 }: MobileSidebarProps) {
+  const setGenreId = useGameQueryStore((s) => s.setGenreId);
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50 lg:hidden">
       <DialogBackdrop
@@ -67,7 +67,7 @@ export function MobileSidebar({
           <SidebarContent
             navigation={navigation}
             teams={teams}
-            onGenreClick={onGenreClick}
+            onGenreClick={setGenreId}
           />
         </DialogPanel>
       </div>

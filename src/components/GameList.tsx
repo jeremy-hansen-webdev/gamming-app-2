@@ -1,38 +1,30 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useInfiniteGamesFilter } from '../hooks/useGameHook';
 import type { Games } from '../services/formatters/Types';
 import GameCard from './GameCard';
 import Platforms from './PlatformsSelector';
 import SortOptions from './SortSelector';
+import { useGameQueryStore } from '../store/store';
 
-interface GameListProps {
-  genreId: number;
-  searchValue: string;
-}
-
-const GameList = ({ genreId, searchValue }: GameListProps) => {
+const GameList = () => {
   const [platformId, setPlatformId] = useState(0);
   const [sortId, setSortId] = useState(0);
-  const [genreIdState, setGenreId] = useState(genreId);
-  const [theSearchValue, setTheSearchValue] = useState(searchValue);
 
-  useEffect(() => {
-    setGenreId(genreId);
-  }, [genreId]);
+  const genreId = useGameQueryStore((s) => s.gameQuery.genreId ?? 0);
+  const searchValue = useGameQueryStore((s) => s.gameQuery.searchValue ?? '');
 
-  useEffect(() => {
-    setTheSearchValue(searchValue);
-  }, [searchValue]);
+  const setGenreId = useGameQueryStore((s) => s.setGenreId);
+  const setSearch = useGameQueryStore((s) => s.setSearch);
 
   const queryOptions = useMemo(
     () => ({
-      genreId: genreIdState,
+      genreId,
       platformId,
       sortId,
-      theSearchValue,
+      theSearchValue: searchValue,
     }),
-    [genreIdState, platformId, sortId, theSearchValue]
+    [genreId, platformId, sortId, searchValue]
   );
 
   const { data, isLoading, fetchNextPage, hasNextPage } =
@@ -57,7 +49,7 @@ const GameList = ({ genreId, searchValue }: GameListProps) => {
     setPlatformId(0);
     setGenreId(0);
     setSortId(0);
-    setTheSearchValue('');
+    setSearch('');
   };
 
   if (isLoading) return <h1 className="text-2xl text-zinc-50">Loading...</h1>;

@@ -8,14 +8,16 @@ import {
 } from '../entities/layoutConfit';
 import { userNavigation } from '../entities/layoutConfit';
 import { useState } from 'react';
+import { useGameQueryStore } from '../store/store';
 
 interface TopbarProps {
   onOpenSidebar: () => void;
-  onSubmit: (value: string) => void;
 }
 
-export function Topbar({ onOpenSidebar, onSubmit }: TopbarProps) {
+export function Topbar({ onOpenSidebar }: TopbarProps) {
   const [searchInput, setSearchInput] = useState('');
+
+  const setSearch = useGameQueryStore((s) => s.setSearch);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -23,7 +25,7 @@ export function Topbar({ onOpenSidebar, onSubmit }: TopbarProps) {
 
   const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
-    onSubmit(searchInput);
+    setSearch(searchInput);
     setSearchInput('');
   };
 
