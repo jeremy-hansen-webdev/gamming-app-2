@@ -6,6 +6,7 @@ import { navigation, teams } from '../entities/layoutConfit';
 import { MobileSidebar } from './MobileSidebar';
 import { DesktopSidebar } from './DesktopSidebar';
 import { Topbar } from './TopBar';
+import NavBar from './NavBar';
 import GameList from './GameList';
 
 interface AppShellProps {
@@ -17,6 +18,7 @@ export default function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="bg-zinc-800">
+      <NavBar />
       {/* Mobile sidebar */}
       <MobileSidebar
         open={sidebarOpen}
@@ -30,10 +32,7 @@ export default function AppShell({ children }: AppShellProps) {
 
       <div className="lg:pl-72">
         {/* Top bar */}
-        <Topbar
-          onOpenSidebar={() => setSidebarOpen(true)}
-
-        />
+        <Topbar onOpenSidebar={() => setSidebarOpen(true)} />
 
         {/* Main content */}
         <main className="py-10">

@@ -13,8 +13,10 @@ if (container) {
   createRoot(container).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <App />
         <ReactQueryDevtools initialIsOpen={false} />
+        <div className="min-h-screen bg-zinc-800">
+          <App />
+        </div>
       </QueryClientProvider>
     </StrictMode>
   );

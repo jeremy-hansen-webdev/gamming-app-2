@@ -1,14 +1,9 @@
 import './App.css';
-import AppShell from './components/AppShell';
-import NavBar from './components/NavBar';
+import { RouterProvider } from 'react-router-dom';
+import { Router } from './components/Router';
 
 function App() {
-  return (
-    <>
-      <NavBar />
-      <AppShell />
-    </>
-  );
+  return <RouterProvider router={Router} />;
 }
 
 export default App;
