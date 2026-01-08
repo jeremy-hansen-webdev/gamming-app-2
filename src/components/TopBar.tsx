@@ -9,6 +9,7 @@ import {
 import { userNavigation } from '../entities/layoutConfit';
 import { useState } from 'react';
 import { useGameQueryStore } from '../store/store';
+import { useNavigate } from 'react-router-dom';
 
 interface TopbarProps {
   onOpenSidebar: () => void;
@@ -19,6 +20,8 @@ export function Topbar({ onOpenSidebar }: TopbarProps) {
 
   const setSearch = useGameQueryStore((s) => s.setSearch);
 
+  const navigate = useNavigate();
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
@@ -27,6 +30,7 @@ export function Topbar({ onOpenSidebar }: TopbarProps) {
     e.preventDefault();
     setSearch(searchInput);
     setSearchInput('');
+    navigate('/');
   };
 
   return (

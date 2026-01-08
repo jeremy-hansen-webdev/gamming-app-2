@@ -1,15 +1,22 @@
+import { useNavigate } from 'react-router-dom';
 import { useGenres } from '../hooks/useGenreHook';
+import { useGameQueryStore } from '../store/store';
 
-type GenreFilterProp = {
-  onGenreClick: (genreId: number) => void;
-};
-
-const GenreList: React.FC<GenreFilterProp> = ({ onGenreClick }) => {
+const GenreList = () => {
   const { data: genres = [], isLoading, error } = useGenres();
+
+  const setGenreId = useGameQueryStore((s) => s.setGenreId);
+
+  const navigate = useNavigate();
 
   if (error) {
     return <p>Genre List Couldn't be retrieved</p>;
   }
+
+  const handleGenreFilter = (databaseId: number) => {
+    setGenreId(databaseId);
+    navigate('/');
+  };
 
   if (isLoading) {
     return (
@@ -23,7 +30,7 @@ const GenreList: React.FC<GenreFilterProp> = ({ onGenreClick }) => {
       {genres.map((g) => (
         <li className="text-zinc-300" key={g.databaseId}>
           <div
-            onClick={() => onGenreClick(g.databaseId)}
+            onClick={() => handleGenreFilter(g.databaseId)}
             className="flex gap-3 rounded-2xl my-3 p-3 items-center cursor-pointer hover:bg-zinc-600"
           >
             <img className="w-24 h-12 rounded-[10%]" src={g.image} alt="" />
