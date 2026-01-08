@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getGamesFilter } from '../services/filterData/getFilteredGamesById.ts';
-import type { Games } from '../services/formatters/Types.ts';
+import type { GameNodeHeader, Games } from '../entities/Games.ts';
 import { GameIdRepository } from '../services/filterData/gameIDRepository.ts';
 import { GameIdFilterService } from '../services/filterData/gameIDFilterService.ts';
 import { getGames } from '../services/getAllData/getGames.ts';
@@ -26,7 +26,7 @@ export function useGamesFilter(queryOptions: QueryOptions) {
         setLoading(true);
         setError(null);
 
-        let gamesList: Games[] = [];
+        let header: GameNodeHeader;
         // Get Genre and PlatformId Query Options
         if (
           queryOptions.genreId ||
@@ -40,11 +40,13 @@ export function useGamesFilter(queryOptions: QueryOptions) {
             platformId: queryOptions.platformId,
             searchValue: queryOptions.theSearchValue,
           });
-          gamesList = await getGamesFilter(ids)
+
+          header = await getGamesFilter(ids);
         } else {
-          gamesList = await getGames();
+          header = await getGames();
         }
 
+        let gamesList: Games[] = header.nodes;
         // Call sort options
         const sortGames = new SortGames(gamesList, queryOptions.sortId);
         gamesList = sortGames.sortData();

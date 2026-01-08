@@ -1,4 +1,6 @@
-import type { Games, Genre, Platform } from '../services/formatters/Types';
+import type { Platform } from '../entities/Platform';
+import type { Genre } from '../entities/Genre';
+import type { Games } from '../entities/Games';
 const GameCard = (game: Games) => {
   return (
     <div

@@ -1,7 +1,7 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useMemo } from 'react';
 import { useInfiniteGamesFilter } from '../hooks/useGameHook';
-import type { Games } from '../services/formatters/Types';
+import type { Games } from '../entities/Games';
 import GameCard from './GameCard';
 import Platforms from './PlatformsSelector';
 import SortOptions from './SortSelector';

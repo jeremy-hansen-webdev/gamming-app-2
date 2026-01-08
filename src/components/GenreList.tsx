@@ -1,5 +1,8 @@
 import { useGenres } from '../hooks/useGenreHook';
-import type { GenreFilterProp } from './DesktopSidebar';
+
+type GenreFilterProp = {
+  onGenreClick: (genreId: number) => void;
+};
 
 const GenreList: React.FC<GenreFilterProp> = ({ onGenreClick }) => {
   const { data: genres = [], isLoading, error } = useGenres();

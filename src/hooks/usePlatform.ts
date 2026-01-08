@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type { Platform } from '../services/formatters/Types';
+import type { Platform } from '../entities/Platform';
 import { getPlatforms } from '../services/getAllData/getPlatforms';
 
 export function usePlatforms() {

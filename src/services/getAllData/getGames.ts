@@ -1,11 +1,11 @@
 import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
-import type { GameNodeHeader, RawGameNodeHeader } from '../formatters/Types.ts';
-
+import type { RawGameNodeHeader } from '../../entities/Games.ts';
+import type { GameNodeHeader } from '../../entities/Games.ts';
 
 export async function getGames(
-  first: number,
-  after: string | null
+  first: number = 8,
+  after: string | null = null
 ): Promise<GameNodeHeader> {
   try {
     const res = await wpGraphqlClient.post('', {

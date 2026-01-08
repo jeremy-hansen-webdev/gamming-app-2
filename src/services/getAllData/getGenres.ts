@@ -1,6 +1,7 @@
 import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
-import type { Genre, RawGenreNode } from '../formatters/Types.ts';
+import type { RawGenreNode } from '../../entities/Genre.ts';
+import type { Genre } from '../../entities/Genre.ts';
 
 export async function getGenres(): Promise<Genre[]> {
   const res = await wpGraphqlClient.post('', {

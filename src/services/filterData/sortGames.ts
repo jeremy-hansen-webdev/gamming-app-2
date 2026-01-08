@@ -1,4 +1,4 @@
-import type { Games } from '../formatters/Types';
+import type { Games } from '../../entities/Games';
 
 export class SortGames {
   constructor(

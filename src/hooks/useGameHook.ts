@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import type { GameNodeHeader, Games } from '../services/formatters/Types';
+import type { GameNodeHeader } from '../entities/Games';
+import type { Games } from '../entities/Games';
 import { getGamesFilter } from '../services/filterData/getFilteredGamesById';
 import { GameIdRepository } from '../services/filterData/gameIDRepository';
 import { GameIdFilterService } from '../services/filterData/gameIDFilterService';
@@ -62,9 +63,6 @@ export function useInfiniteGamesFilter(queryOptions: QueryOptions) {
         pageInfo: gamesList.pageInfo,
         nodes: sortGames.sortData(),
       };
-
-      console.log('sorted Games, ', sortGames);
-
       return sortedGames;
     },
 

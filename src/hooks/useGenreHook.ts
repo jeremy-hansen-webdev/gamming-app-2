@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type { Genre } from '../services/formatters/Types';
+import type { Genre } from '../entities/Genre';
 import { getGenres } from '../services/getAllData/getGenres';
 
 export function useGenres() {

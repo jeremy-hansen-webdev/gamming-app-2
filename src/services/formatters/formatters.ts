@@ -1,10 +1,8 @@
-import type {
-  Platform,
-  RawGameNode,
-  RawGameNodeHeader,
-  RawGenreNode,
-  RawPlatformNode,
-} from './Types';
+import type { RawPlatformNode } from '../../entities/Platform';
+import type { Platform } from '../../entities/Platform';
+import type { RawGenreNode } from '../../entities/Genre';
+import type { RawGameNodeHeader } from '../../entities/Games';
+import type { RawGameNode } from '../../entities/Games';
 
 export const formatters = {
   games(reqData: RawGameNodeHeader) {

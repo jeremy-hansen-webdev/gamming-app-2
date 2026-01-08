@@ -1,7 +1,8 @@
 // PlatformQueries.ts
 import { formatters } from '../formatters/formatters.ts';
 import { wpGraphqlClient } from '../GameApiGraphQl.ts';
-import type { Platform, RawPlatformNode } from '../formatters/Types.ts';
+import type { RawPlatformNode } from '../../entities/Platform.ts';
+import type { Platform } from '../../entities/Platform.ts';
 
 export async function getPlatforms(): Promise<Platform[]> {
   const res = await wpGraphqlClient.post('', {
