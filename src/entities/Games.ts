@@ -1,4 +1,4 @@
-import type { PageInfoHeader } from './PageInfoHeader';
+import type { PageInfoHeader } from './PageNavigation';
 import type { RawPlatformNode } from './Platform';
 import type { Platform } from './Platform';
 import type { RawGenreNode } from './Genre';

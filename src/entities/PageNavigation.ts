@@ -1,5 +1,7 @@
-// Shared types for sidebar components
-
+export interface PageInfoHeader {
+  endCursor: string | null;
+  hasNextPage: boolean;
+}
 export interface NavItem {
   name: string;
   href: string;

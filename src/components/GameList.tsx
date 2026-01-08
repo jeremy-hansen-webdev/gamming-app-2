@@ -1,11 +1,12 @@
+import { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useState, useMemo } from 'react';
-import { useInfiniteGamesFilter } from '../hooks/useGameHook';
+import { Link } from 'react-router-dom';
 import type { Games } from '../entities/Games';
+import { useInfiniteGamesFilter } from '../hooks/useGameHook';
+import { useGameQueryStore } from '../store/store';
 import GameCard from './GameCard';
 import Platforms from './PlatformsSelector';
 import SortOptions from './SortSelector';
-import { useGameQueryStore } from '../store/store';
 
 const GameList = () => {
   const [platformId, setPlatformId] = useState(0);
@@ -31,9 +32,9 @@ const GameList = () => {
     useInfiniteGamesFilter(queryOptions);
   // @ts-expect-error -- React Query infinite data has pages
   const games = data?.pages.flatMap((p) => p.nodes) ?? [];
-  // @ts-expect-error -- React Query infinite data has pages
-  const endCursor = data?.pages.at(-1).pageInfo.endCursor ?? '';
-  console.log('endCursor', endCursor);
+
+  // const endCursor = data?.pages.at(-1).pageInfo.endCursor ?? '';
+  // console.log('endCursor', endCursor);
 
   // const games: Games[]
 
@@ -75,7 +76,9 @@ const GameList = () => {
       >
         <div className="flex flex-wrap justify-center gap-10">
           {games.map((game: Games) => (
-            <GameCard key={game.id} {...game} />
+            <Link to={`game/${game.databaseId}`}>
+              <GameCard key={game.databaseId} {...game} />
+            </Link>
           ))}
         </div>
       </InfiniteScroll>
